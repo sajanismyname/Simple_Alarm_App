@@ -1,5 +1,5 @@
-// Function to show World Clock
-function showWorldClock() {
+
+    function showWorldClock() {
   const content = document.getElementById('content');
   content.innerHTML = `
     <h2>World Clock</h2>
@@ -15,22 +15,59 @@ function showWorldClock() {
   setInterval(updateWorldClock, 1000);
 }
 
-function updateWorldClock() {
+    function updateWorldClock() {
   const timezone = document.getElementById('timezone').value;
   const now = new Date().toLocaleString('en-US', { timeZone: timezone });
   document.getElementById('world-clock-time').textContent = now;
 }
 
-// Function to show Set Alarm
-function showSetAlarm() {
+
+    function showSetAlarm() {
   const content = document.getElementById('content');
   content.innerHTML = `
+  <div class="alarm-container">
     <h2>Set Alarm</h2>
+    <div class="alarm=controls">
     <input type="time" id="alarm-time" />
     <button onclick="setAlarm()">Set Alarm</button>
+    </div>
     <ul id="alarm-list"></ul>
+    </div>
   `;
 }
+
+  function setAlarm() {
+  const alarmTime = document.getElementById('alarm-time').value; 
+  if (!alarmTime) {
+    alert('Please select a time for the alarm.');
+    return;
+  }
+  const alarmList = document.getElementById('alarm-list');
+  const alarmItem = document.createElement('li');
+  alarmItem.textContent = `Alarm set for ${alarmTime}`;
+  alarmList.appendChild(alarmItem);
+  }
+  let alarmSet = false;
+
+    function showAlarm(){
+    const alarmTime = document.getElementById('alarm-time').value;
+    if(alarmTime){
+      
+      alert(`Alarm set for ${alarmTime}`);
+    }
+
+    setInterval(() => {
+      if (alarmSet && alarmTime) {
+        const now = new Date();
+        const currentTime = now.toTimeString().slice(0, 5); 
+        if (currentTime === alarmTime) {
+          alert("⏰ Alarm! Time's up!");
+          alarmSet = false; 
+        }
+      }
+    }, 1000); 
+
+    }
 
 
     let stopwatchInterval;
@@ -45,9 +82,10 @@ function showSetAlarm() {
       content.innerHTML = `
         <h2>StopWatch:</h2>
         <p id="stopwatch-time">00:00:00.000</p>
-        <button onclick="startStopwatch()">Start</button>
-        <button onclick="stopStopwatch()">Stop</button>
-        <button onclick="resetStopwatch()">Reset</button>
+        <div id="button-group">        <button id="start" onclick="startStopwatch()">Start</button>
+        <button id="stop" onclick="stopStopwatch()">Stop</button>
+        <button id="reset" onclick="resetStopwatch()">Reset</button>
+        </div>
       `;
     }
 
@@ -65,17 +103,16 @@ function showSetAlarm() {
         running = true;
         startTime = Date.now() - elapsedTime;
 
-        // Real time updater
+        
         stopwatchInterval = setInterval(() => {
           elapsedTime = Date.now() - startTime;
-        }, 100); // update real time every 100ms (not critical)
-
-        // Fake millisecond spinner
+        }, 100);
+        
         displayInterval = setInterval(() => {
-          fakeMilliseconds += 80; // spin quickly!
+          fakeMilliseconds += 80; 
           if (fakeMilliseconds >= 1000) fakeMilliseconds = 0;
           updateDisplay(elapsedTime);
-        }, 15); // refresh display very fast
+        }, 15); 
       }
     }
 
@@ -94,7 +131,7 @@ function showSetAlarm() {
       updateDisplay(0);
     }
 
-// Function to show Normal Watch
+
 function showNormalWatch() {
   const content = document.getElementById('content');
   content.innerHTML = `
@@ -113,5 +150,5 @@ function updateNormalWatch() {
     }
 
 window.onload = function () {
-  showNormalWatch(); // Show normal clock by default
+  showNormalWatch(); 
 };
